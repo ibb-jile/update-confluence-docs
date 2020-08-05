@@ -31,8 +31,6 @@ async function main() {
       auth: inputs.confluenceAuth 
    });
 
-   console.log(confluenceRes.data);
-
    axios.put(confluenceUrl, {
       version: {
          number: ++confluenceRes.data.version.number
