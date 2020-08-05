@@ -10,9 +10,6 @@ inputs:
   confluence_password:
     description: 'Password for confluence account'
     required: true
-  confluence_page_title:
-    description: 'Confluence page title'
-    required: true
   confluence_content_id:
     description: 'Confluence page content id'
     required: true

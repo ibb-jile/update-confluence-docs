@@ -6,7 +6,6 @@ function getInputs() {
    return {
       mdFilePath: core.getInput('md_file_path'),
       confluenceContentId: core.getInput('confluence_content_id'),
-      confluencePageTitle: core.getInput('confluence_page_title'),
       confluenceAuth: {
          username: core.getInput('confluence_username'),
          password: core.getInput('confluence_password')
@@ -25,20 +24,21 @@ function buildMarkdownHTML(markdownContent) {
 async function main() {
    let inputs = getInputs();
    
-   let confluenceGetUrl = `https://stroeerdigitalgroup.atlassian.net/wiki/rest/api/content?title=${inputs.confluencePageTitle}`;
-   let confluencePutUrl = `https://stroeerdigitalgroup.atlassian.net/wiki/rest/api/content/${inputs.confluenceContentId}`;
+   let confluenceUrl = `https://stroeerdigitalgroup.atlassian.net/wiki/rest/api/content/${inputs.confluenceContentId}`;
 
    let mdFileContent = await fs.readFile(inputs.mdFilePath, { encoding: 'utf-8' });
-   let confluenceData = await axios.get(confluenceGetUrl, { 
+   let confluenceRes = await axios.get(confluenceUrl, { 
       auth: inputs.confluenceAuth 
    });
 
-   axios.put(confluencePutUrl, {
+   console.log(confluenceRes.data);
+
+   axios.put(confluenceUrl, {
       version: {
-         number: ++confluenceData.data.version.number
+         number: ++confluenceRes.data.version.number
       },
-      title: inputs.confluencePageTitle,
-      type: 'page',
+      title: confluenceRes.data.title,
+      type: confluenceRes.data.type,
       body: {
          storage: {
             value: buildMarkdownHTML(mdFileContent),
