@@ -1,0 +1,21 @@
+name: 'Confluence docs update'
+description: 'Updates markdown docs on confluence page'
+  inputs:
+    md_file_path:
+      description: 'Path to MD file to read from'
+      required: true
+    confluence_username:
+      description: 'Username (email) for confluence account'
+      required: true
+    confluence_password:
+      description: 'Password for confluence account'
+      required: true
+    confluence_page_title:
+      description: 'Confluence page title'
+      required: true
+    confluence_content_id:
+      description: 'Confluence page content id'
+      required: true
+runs:
+  using: 'node12'
+  main: 'index.js'
